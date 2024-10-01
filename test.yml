@@ -1,0 +1,13 @@
+
+
+services:
+
+  test_runner:
+    build: .
+
+    volumes:
+      - .:/src
+    command: >
+      sh -c "pytest -v -s app/tests/"
+    env_file:
+      - .env
