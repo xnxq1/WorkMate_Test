@@ -43,3 +43,6 @@ docker-compose -f test.yml up --build
 
 - DELETE /cats/delete
 - Удаление информации о котенке
+
+
+Минимальный набор для проверки тестового задания в файле test_data.json
