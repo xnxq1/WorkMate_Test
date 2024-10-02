@@ -8,6 +8,6 @@ services:
     volumes:
       - .:/src
     command: >
-      sh -c "pytest -v -s app/tests/"
+      sh -c "pytest -vv -s app/tests/"
     env_file:
       - .env
