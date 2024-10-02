@@ -4,6 +4,9 @@
 http://0.0.0.0:8000/docs/
 
 Помощь по запуску:
+
+Сформируйте файл .env как в .env-example
+
 Для запуска сервера нужно прописать:
 
 docker-compose -f dev.yml up --build
