@@ -1,30 +1,31 @@
 from app.domain.entities import *
 import pytest
 
-@pytest.mark.parametrize('name, size, activity, normal_form', [
-    ('Сфинкс', Size.big, Activity.active, True),
-    ('Сфинкс', 'big', 'active', False),
+@pytest.mark.parametrize('id, name, normal_form', [
+    (1, 'Сфинкс', True),
+    (2, 'С' * 300, False),
 ])
-async def test_breed(name, size, activity, normal_form):
+async def test_breed(id, name, normal_form):
     try:
-        breed = Breed(name=name, size=size, activity=activity)
+        breed = Breed(id=id, name=name)
         if not normal_form:
             assert False
+
+        assert breed.id == id
         assert breed.name == name
-        assert breed.size == size
-        assert breed.activity == activity
+
     except:
         if normal_form:
             assert False
 
 
-@pytest.mark.parametrize('name, color, age_in_month, normal_form', [
-    ('Вася', Color.ginger, 5, True),
-    ('Снежок', 'white', 10.0, False),
+@pytest.mark.parametrize('id, name, color, age_in_month, normal_form', [
+    (1, 'Вася', Color.ginger, 5, True),
+    (2, 'Снежок', 'white', 10.0, False),
 ])
-async def test_cat(name, color, age_in_month, normal_form):
+async def test_cat(id, name, color, age_in_month, normal_form):
     try:
-        cat = Cat(name=name, color=color, age_in_month=age_in_month)
+        cat = Cat(id=id, name=name, color=color, age_in_month=age_in_month)
         if not normal_form:
             assert False
         assert cat.name == name
