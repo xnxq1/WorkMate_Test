@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from functools import wraps
 from typing import Callable
-
+from uuid import UUID
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.domain.entities import Cat, Breed
@@ -27,7 +27,7 @@ class CatReader(ABC):
         ...
 
     @abstractmethod
-    async def get_by_id(self, cat_id: int) -> Cat:
+    async def get_by_id(self, cat_id: UUID) -> Cat:
         ...
 
     @abstractmethod
@@ -40,11 +40,11 @@ class CatWriter(ABC):
     async def add(self, cat: Cat) -> None:
         ...
     @abstractmethod
-    async def update(self, cat_id: int) -> None:
+    async def update(self, cat_id: UUID, new_data: dict) -> None:
         ...
 
     @abstractmethod
-    async def delete(self, cat_id: int) -> None:
+    async def delete(self, cat_id: UUID) -> None:
         ...
 
 
@@ -52,6 +52,10 @@ class BreedReader(ABC):
 
     @abstractmethod
     async def get_all(self) -> list[Breed]:
+        ...
+
+    @abstractmethod
+    async def get_by_name(self, breed_name: str) -> Breed:
         ...
 
 class BreedWriter(ABC):

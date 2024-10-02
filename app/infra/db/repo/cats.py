@@ -5,7 +5,7 @@ from app.infra.db.repo.exceptions import NotCatException, NotCatsWithThisBreedEx
 from app.infra.db.repo.base import CatReader, CatWriter, check_exception
 from app.infra.db.models import Cat as Cat_db, Breed
 from app.domain.entities import Cat as Cat_entity
-
+from uuid import UUID
 
 class ICatReader(CatReader):
 
@@ -18,7 +18,7 @@ class ICatReader(CatReader):
 
             return result
 
-    async def get_by_id(self, cat_id: int) -> Cat_entity:
+    async def get_by_id(self, cat_id: UUID) -> Cat_entity:
         async with db.session_factory() as session:
             query = select(Cat_db).where(Cat_db.id == cat_id)
             result = await session.execute(query)
@@ -33,7 +33,7 @@ class ICatReader(CatReader):
         async with db.session_factory() as session:
             query = select(Cat_db).join(Breed).where(Breed.name == breed_name)
             result = await session.execute(query)
-
+            result = result.scalars().all()
             if not result:
                 raise NotCatsWithThisBreedException(breed_name)
 
@@ -44,14 +44,14 @@ class ICatWriter(CatWriter):
     @check_exception
     async def add(self, cat: Cat_entity) -> None:
         async with db.session_factory() as session:
-            stmt = insert(Cat_db).values(**cat)
+            stmt = insert(Cat_db).values(**dict(cat))
             await session.execute(stmt)
             await session.commit()
 
     @check_exception
-    async def update(self, cat: Cat_entity) -> None:
+    async def update(self, cat_id: UUID, new_data: dict) -> None:
         async with db.session_factory() as session:
-            stmt = update(Cat_db).values(**cat).where(Cat_db.id == cat['id'])
+            stmt = update(Cat_db).where(Cat_db.id == cat_id).values(**new_data)
             await session.execute(stmt)
             await session.commit()
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+from uuid import UUID
 
 class BaseRepoException(Exception):
 
@@ -9,7 +9,7 @@ class BaseRepoException(Exception):
 
 @dataclass
 class NotCatException(Exception):
-    cat_id: int
+    cat_id: UUID
 
     @property
     def message(self):
@@ -24,3 +24,11 @@ class NotCatsWithThisBreedException(Exception):
     @property
     def message(self):
         return f'Котов с породой {self.breed_name} нет'
+
+@dataclass
+class NotBreedWithThisNameException(Exception):
+    breed_name: str
+
+    @property
+    def message(self):
+        return f'Породы {self.breed_name} нет'
